@@ -4,9 +4,12 @@
 
 *.pydevproject
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 .project
 >>>>>>> parent of 74da57d... クラスパス追加
+=======
+>>>>>>> 7a9f38cbf598eb02c7c8e34905cd0beeb47dd383
 .metadata
 bin/
 tmp/
@@ -16,9 +19,12 @@ tmp/
 *~.nib
 local.properties
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 .classpath
 >>>>>>> parent of 74da57d... クラスパス追加
+=======
+>>>>>>> 7a9f38cbf598eb02c7c8e34905cd0beeb47dd383
 .settings/
 .loadpath
 
