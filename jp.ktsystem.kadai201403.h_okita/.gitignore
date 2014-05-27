@@ -3,7 +3,10 @@
 #################
 
 *.pydevproject
+<<<<<<< HEAD
+=======
 .project
+>>>>>>> parent of 74da57d... クラスパス追加
 .metadata
 bin/
 tmp/
@@ -12,7 +15,10 @@ tmp/
 *.swp
 *~.nib
 local.properties
+<<<<<<< HEAD
+=======
 .classpath
+>>>>>>> parent of 74da57d... クラスパス追加
 .settings/
 .loadpath
 
