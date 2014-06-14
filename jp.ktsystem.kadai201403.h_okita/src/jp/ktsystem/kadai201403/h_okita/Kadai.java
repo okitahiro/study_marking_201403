@@ -65,6 +65,27 @@ public class Kadai {
 			throw new KadaiException(ErrorCode.INPUT_FILE_NOT_EXIST);
 		}
 
+		// 入力ファイルの読み込み
+		List<WorkTimeModel> modelList = readFileOfLv1(inputFile);
+
+		// ファイルへ書き出し
+		try {
+			fileOutPut(anOutputPath, modelList, CHAR_SET);
+		} catch (KadaiException ke) {
+			throw ke;
+		} catch (Exception e) {
+			// ファイルの出力エラー
+			throw new KadaiException(ErrorCode.ERROE_OUTPUT_FILE);
+		}
+	}
+
+	/***
+	 * 入力ファイルから、一文字レベルの文字解析を行い、業務時間データを取得する。
+	 * @param inputFile 入力ファイル
+	 * @return WorkTimeModelのリスト
+	 * @throws KadaiException
+	 */
+	private static List<WorkTimeModel> readFileOfLv1(File inputFile) throws KadaiException {
 		BufferedReader br = null;
 		// データを保持するモデルリスト
 		List<WorkTimeModel> modelList = new ArrayList<WorkTimeModel>();
@@ -134,15 +155,7 @@ public class Kadai {
 			}
 		}
 
-		// ファイルへ書き出し
-		try {
-			fileOutPut(anOutputPath, modelList, CHAR_SET);
-		} catch (KadaiException ke) {
-			throw ke;
-		} catch (Exception e) {
-			// ファイルの出力エラー
-			throw new KadaiException(ErrorCode.ERROE_OUTPUT_FILE);
-		}
+		return modelList;
 	}
 
 	/**
@@ -241,6 +254,27 @@ public class Kadai {
 			throw new KadaiException(ErrorCode.INPUT_FILE_NOT_EXIST);
 		}
 
+		// 入力ファイルの読み込み
+		List<WorkTimeOfMonthModel> monthModelList = readFileOfLv2(inputFile);
+
+		// ファイルへ書き出し
+		try {
+			fileOutPtOfLv2(monthModelList, anOutputPath);
+		} catch (KadaiException ke) {
+			throw ke;
+		} catch (Exception e) {
+			// ファイルの出力エラー
+			throw new KadaiException(ErrorCode.ERROE_OUTPUT_FILE);
+		}
+	}
+
+	/***
+	 * 入力ファイルから、一文字レベルの文字解析を行い、業務時間データを取得する。
+	 * @param inputFile 入力ファイル
+	 * @return WorkTimeModelのリスト
+	 * @throws KadaiException
+	 */
+	private static List<WorkTimeOfMonthModel> readFileOfLv2(File inputFile) throws KadaiException {
 		BufferedReader br = null;
 		// データを保持するモデルリスト
 		List<WorkTimeOfMonthModel> monthModelList = new ArrayList<WorkTimeOfMonthModel>();
@@ -311,18 +345,10 @@ public class Kadai {
 				}
 			}
 		}
-
-		// ファイルへ書き出し
-		try {
-			fileOutPtOfLv2(monthModelList, anOutputPath);
-		} catch (KadaiException ke) {
-			throw ke;
-		} catch (Exception e) {
-			// ファイルの出力エラー
-			throw new KadaiException(ErrorCode.ERROE_OUTPUT_FILE);
-		}
+		
+		return monthModelList;
 	}
-
+	
 	/**
 	 * 年月データ取得
 	 * @param str データ文字列
@@ -513,32 +539,6 @@ public class Kadai {
 	}
 
 	/**
-	 * Lv2のファイル書き出し処理
-	 * @param monthModelList 月の勤怠情報データモデル
-	 * @param outUpFolderPath 出力フォルダパス
-	 * @throws IOException
-	 * @throws KadaiException
-	 */
-	private static void fileOutPtOfLv2(List<WorkTimeOfMonthModel> monthModelList, String outUpFolderPath) throws IOException, KadaiException {
-		for (WorkTimeOfMonthModel model : monthModelList) {
-			if (model.getMonth() == null || model.getMonth().isEmpty()) {
-				throw new KadaiException(ErrorCode.EMPTY_MONTH);
-			}
-
-			if (!checkDate(model.getMonth(), "yyyyMM")) {
-				throw new KadaiException(ErrorCode.INVALID_MONTH);
-			}
-
-			// ファイル名指定
-			StringBuilder sb = new StringBuilder(outUpFolderPath);
-			sb.append("\\").append(model.getMonth()).append(".txt");
-
-			// ファイル書き出し
-			fileOutPut(sb.toString(), model.getModelList(), CHAR_SET);
-		}
-	}
-
-	/**
 	 * 文字を読み込み、空白文字以外を返す
 	 * @param br BufferedReader
 	 * @return 読み込み文字
@@ -605,7 +605,7 @@ public class Kadai {
 	 * @throws 入出力の例外
 	 * @since 2014/04/01
 	 */
-	public static void fileOutPut(String anOutputPath,
+	private static void fileOutPut(String anOutputPath,
 			List<WorkTimeModel> dataList, String charSet) throws IOException,
 			KadaiException {
 		// データが0件の場合、処理をやめる
@@ -668,7 +668,7 @@ public class Kadai {
 	 * @param format 日付のフォーマット形式
 	 * @return OK:true, NG:false
 	 */
-	public static boolean checkDate(String date, String format) {
+	private static boolean checkDate(String date, String format) {
 		// 日付の書式
 		DateFormat df = new SimpleDateFormat(format);
 
@@ -679,6 +679,32 @@ public class Kadai {
 			return true;
 		} catch (ParseException e) {
 			return false;
+		}
+	}
+
+	/**
+	 * Lv2のファイル書き出し処理
+	 * @param monthModelList 月の勤怠情報データモデル
+	 * @param outUpFolderPath 出力フォルダパス
+	 * @throws IOException
+	 * @throws KadaiException
+	 */
+	private static void fileOutPtOfLv2(List<WorkTimeOfMonthModel> monthModelList, String outUpFolderPath) throws IOException, KadaiException {
+		for (WorkTimeOfMonthModel model : monthModelList) {
+			if (model.getMonth() == null || model.getMonth().isEmpty()) {
+				throw new KadaiException(ErrorCode.EMPTY_MONTH);
+			}
+
+			if (!checkDate(model.getMonth(), "yyyyMM")) {
+				throw new KadaiException(ErrorCode.INVALID_MONTH);
+			}
+
+			// ファイル名指定
+			StringBuilder sb = new StringBuilder(outUpFolderPath);
+			sb.append("\\").append(model.getMonth()).append(".txt");
+
+			// ファイル書き出し
+			fileOutPut(sb.toString(), model.getModelList(), CHAR_SET);
 		}
 	}
 
@@ -711,7 +737,7 @@ public class Kadai {
 	 * @return 勤務時間
 	 * @throws KadaiException
 	 */
-	public static String calcWorkTime(String aStartTime, String aEndTime)
+	private static String calcWorkTime(String aStartTime, String aEndTime)
 			throws KadaiException {
 		// 出社時間を分換算で取得
 		int sTime = getMinTimeDate(aStartTime);
