@@ -1,7 +1,12 @@
 package jp.ktsystem.kadai201403.h_okita;
 
+/**
+ * 業務時間のフィル書き込み用情報を収納するモデルクラス
+ * @author okita
+ * @since 2014/04/03
+ */
 public class OutPutDataModel {
-	// 日付
+		// 日付
 		private String date;
 
 		// 出社時間
