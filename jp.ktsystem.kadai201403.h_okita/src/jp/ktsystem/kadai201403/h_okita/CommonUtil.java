@@ -14,15 +14,15 @@ import java.io.InputStream;
 public class CommonUtil {
 
 	// 文字コード（Tab）
-	private static final int T_CODE = 0x09;
+	public static final int T_CODE = 0x09;
 	// 文字コード（改行）
-	private static final int N_CODE = 0x0A;
+	public static final int N_CODE = 0x0A;
 	// 文字コード（キャリッジリターン）
-	private static final int R_CODE = 0x0D;
+	public static final int R_CODE = 0x0D;
 	// 文字コード（半角スペース）
-	private static final int S_CODE = 0x20;
+	public static final int S_CODE = 0x20;
 	// 文字コード（全角スペース）
-	private static final int ZS_CODE = (int) '　';
+	public static final int ZS_CODE = (int) '　';
 
 	/**
 	 * 文字列のnull、空文字チェック
