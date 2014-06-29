@@ -96,45 +96,41 @@ public class Kadai {
 			br = new BufferedReader(new InputStreamReader(CommonUtil.skipUTF8BOM(new FileInputStream(inputFile)), CHAR_SET));
 
 			// チェック文字
-			int checkC = '[';
+			List<Integer> checkList = new ArrayList<Integer>();
+			checkList.add((int) '[');
 
 			int c = getNextCheckChar(br);
 			while (-1 != c) {
 				//チェック文字ではなかった場合
-				if (checkC != c) {
+				if (!checkC(checkList, c)) {
 					// 読み込み文字のエラー
 					throw new KadaiException(ErrorCode.INVALID_STRING);
 				}
 
 				// チェック文字列変更
-				switch (checkC) {
+				switch (c) {
 				case '[':
-					checkC = '{';
+					checkList.clear();
+					checkList.add((int) '{');
 					break;
 				case '{':
 					//データ部（｛～｝）の文字列取得
 					String dataStr = getStringData(br, '}');
-
 					//データ取得処理
 					modelList.add(getDataOfLv1(dataStr));
 
-					c = getNextCheckChar(br);
-					if (',' == c) {
-						// 次データがある場合
-						checkC = '{';
-					} else if (']' == c) {
-						// データのまとまり終了の場合
-						c = getNextCheckChar(br);
-						if (-1 != c)
-						{
-							// 読み込み文字のエラー
-							throw new KadaiException(ErrorCode.INVALID_STRING);
-						}
-						continue;
-					} else {
-						// 読み込み文字のエラー
-						throw new KadaiException(ErrorCode.INVALID_STRING);
-					}
+					checkList.clear();
+					checkList.add((int) ',');
+					checkList.add((int) ']');
+					break;
+				case ',':
+					// 次データがある場合
+					checkList.clear();
+					checkList.add((int) '{');
+					break;
+				case ']':
+					// データのまとまり終了の場合
+					checkList.clear();
 					break;
 				default:
 					throw new KadaiException(ErrorCode.INVALID_STRING);
@@ -142,6 +138,13 @@ public class Kadai {
 
 				c = getNextCheckChar(br);
 			}
+
+			// 最後が「]」でない状態で終了している場合
+			if (0 != checkList.size()) {
+				// 読み込み文字のエラー
+				throw new KadaiException(ErrorCode.INVALID_STRING);
+			}
+
 		} catch (IOException e) {
 			// 入力ファイルの読み込みエラー
 			throw new KadaiException(ErrorCode.ERROR_LOADING_INPUT_FILE);
@@ -288,21 +291,24 @@ public class Kadai {
 			String month = null;
 
 			// チェック文字
-			int checkC = '{';
+			List<Integer> checkList = new ArrayList<Integer>();
+			checkList.add((int) '{');
 
 			int c = getNextCheckChar(br);
 			while (-1 != c) {
 				//チェック文字ではなかった場合
-				if (checkC != c) {
+				if (!checkC(checkList, c)) {
 					// 読み込み文字のエラー
 					throw new KadaiException(ErrorCode.INVALID_STRING);
 				}
 
-				switch (checkC) {
+				switch (c) {
 				case '{':
 					// 月データ取得処理
 					month = getMonthOfLv2(getStringData(br, ':'));
-					checkC = '[';
+
+					checkList.clear();
+					checkList.add((int) '[');
 					break;
 				case '[':
 					//データ部（[～]）の文字列取得
@@ -311,27 +317,33 @@ public class Kadai {
 					WorkTimeOfMonthModel model = new WorkTimeOfMonthModel(month, getDataOfMonthOfLv2(dataStr));
 					monthModelList.add(model);
 
-					c = getNextCheckChar(br);
-					if (',' == c) {
-						// 次データがある場合
-						// 月データ取得処理
-						month = getMonthOfLv2(getStringData(br, ':'));
-						checkC = '[';
-					} else if ('}' == c) {
-						// データのまとまり終了の場合
-						if (-1 != getNextCheckChar(br))
-						{
-							// 読み込み文字のエラー
-							throw new KadaiException(ErrorCode.INVALID_STRING);
-						}
-					} else {
-						// 読み込み文字のエラー
-						throw new KadaiException(ErrorCode.INVALID_STRING);
-					}
+					checkList.clear();
+					checkList.add((int) ',');
+					checkList.add((int) '}');
 					break;
+				case ',':
+					// 次データがある場合
+					// 月データ取得処理
+					month = getMonthOfLv2(getStringData(br, ':'));
+
+					checkList.clear();
+					checkList.add((int) '[');
+					break;
+				case '}':
+					// データのまとまり終了の場合
+					checkList.clear();
+					break;
+				default:
+					throw new KadaiException(ErrorCode.INVALID_STRING);
 				}
 
 				c = getNextCheckChar(br);
+			}
+
+			// 最後が「}」でない状態で終了している場合
+			if (0 != checkList.size()) {
+				// 読み込み文字のエラー
+				throw new KadaiException(ErrorCode.INVALID_STRING);
 			}
 		} catch (IOException e) {
 			// 入力ファイルの読み込みエラー
@@ -561,6 +573,20 @@ public class Kadai {
 		}
 
 		return c;
+	}
+
+	/**
+	 * チェックしたい値が、チェック候補リストにあるかどうか調べる
+	 * @param checkList チェック候補の値のリスト
+	 * @param c チェックしたい値
+	 * @return 候補にチェックしたい値があればtrue、なければfalse
+	 */
+	private static boolean checkC(List<Integer> checkList, int c) {
+		if (null == checkList || 0 == checkList.size()) {
+			return false;
+		}
+
+		return checkList.contains(c);
 	}
 
 	/**
