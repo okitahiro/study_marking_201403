@@ -201,8 +201,7 @@ public class Kadai {
 		for (; i < strList.size(); i++) {
 			Matcher m = DATA_PAT.matcher(strList.get(i));
 
-			if (!m.find())
-			{
+			if (!m.find()) {
 				throw new KadaiException(ErrorCode.INVALID_STRING);
 			}
 
@@ -357,10 +356,10 @@ public class Kadai {
 				}
 			}
 		}
-		
+
 		return monthModelList;
 	}
-	
+
 	/**
 	 * 年月データ取得
 	 * @param str データ文字列
@@ -392,8 +391,7 @@ public class Kadai {
 		StringBuilder allData = new StringBuilder(str);
 
 		// はじめの「｛」を削除
-		for (int i = 0; i < allData.length(); i++)
-		{
+		for (int i = 0; i < allData.length(); i++) {
 			if (CommonUtil.checkBlankCode((int) allData.charAt(i))) {
 				continue;
 			}
@@ -458,8 +456,7 @@ public class Kadai {
 			throw new KadaiException(ErrorCode.INVALID_STRING);
 		}
 		// 最後の文字列が空白だけかチェック
-		for (int i = 0; i < sb.length(); i++)
-		{
+		for (int i = 0; i < sb.length(); i++) {
 			if (!CommonUtil.checkBlankCode(sb.charAt(i))) {
 				throw new KadaiException(ErrorCode.INVALID_STRING);
 			}
@@ -603,8 +600,7 @@ public class Kadai {
 		int c = br.read();
 		while (checkC != c) {
 			// チェック文字が見つからないとき
-			if (-1 == c)
-			{
+			if (-1 == c) {
 				throw new KadaiException(ErrorCode.INVALID_STRING);
 			}
 			// 制御コードチェック
