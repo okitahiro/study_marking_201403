@@ -49,12 +49,12 @@ public class Kadai {
 	 */
 	public static void parseWorkTimeData(String anInputPath, String anOutputPath) throws KadaiException {
 		// 入力ファイルパスチェック
-		if (CommonUtil.strIsEmpty(anInputPath)) {
+		if (CommonUtil.isEmptytrStr(anInputPath)) {
 			throw new KadaiException(ErrorCode.INPUT_FILE_PATH_ENPTY);
 		}
 
 		// 出力ファイルパスチェック
-		if (CommonUtil.strIsEmpty(anOutputPath)) {
+		if (CommonUtil.isEmptytrStr(anOutputPath)) {
 			throw new KadaiException(ErrorCode.OUTPUT_FILE_PATH_ENPTY);
 		}
 
@@ -241,12 +241,12 @@ public class Kadai {
 	 */
 	public static void parseWorkTimeDataLv2(String anInputPath, String anOutputPath) throws KadaiException {
 		// 入力ファイルパスチェック
-		if (CommonUtil.strIsEmpty(anInputPath)) {
+		if (CommonUtil.isEmptytrStr(anInputPath)) {
 			throw new KadaiException(ErrorCode.INPUT_FILE_PATH_ENPTY);
 		}
 
 		// 出力ファイルパスチェック
-		if (CommonUtil.strIsEmpty(anOutputPath)) {
+		if (CommonUtil.isEmptytrStr(anOutputPath)) {
 			throw new KadaiException(ErrorCode.OUTPUT_FILE_PATH_ENPTY);
 		}
 
@@ -385,7 +385,7 @@ public class Kadai {
 	 */
 	private static List<WorkTimeModel> getDataOfMonthOfLv2(String str) throws KadaiException {
 
-		if (CommonUtil.strIsEmpty(str)) {
+		if (CommonUtil.isEmptytrStr(str)) {
 			throw new KadaiException(ErrorCode.INVALID_COLUMNS_NUM);
 		}
 
@@ -656,7 +656,7 @@ public class Kadai {
 					WorkTimeModel workTimeModel = dataList.get(i);
 					String date = workTimeModel.getDate();
 					// 日付が空文字
-					if (CommonUtil.strIsEmpty(date)) {
+					if (CommonUtil.isEmptytrStr(date)) {
 						throw new KadaiException(ErrorCode.EMPTY_DAY);
 					}
 					// 日付が不正
@@ -811,7 +811,7 @@ public class Kadai {
 	 */
 	private static int getMinTimeDate(String time) throws KadaiException {
 		// null・空文字チェック
-		if (CommonUtil.strIsEmpty(time)) {
+		if (CommonUtil.isEmptytrStr(time)) {
 			throw new KadaiException(ErrorCode.EMPTY_TIME);
 		}
 

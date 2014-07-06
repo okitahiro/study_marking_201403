@@ -29,7 +29,7 @@ public class CommonUtil {
 	 * @param checkStr チェックする文字列
 	 * @return 文字列がnull、空文字：true、それ以外：false
 	 */
-	public static boolean strIsEmpty(String checkStr) {
+	public static boolean isEmptytrStr(String checkStr) {
 		return (null == checkStr || 0 == checkStr.length());
 	}
 
