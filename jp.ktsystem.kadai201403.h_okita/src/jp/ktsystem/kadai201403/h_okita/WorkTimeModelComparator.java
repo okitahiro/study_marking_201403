@@ -14,8 +14,8 @@ public class WorkTimeModelComparator implements Comparator<WorkTimeModel> {
 	 * 比較メソッド
 	 */
 	public int compare(WorkTimeModel a, WorkTimeModel b) {
-		String date1 = a.getDate();
-		String date2 = b.getDate();
+		String date1 = a.getDateStr();
+		String date2 = b.getDateStr();
 
 		return date1.compareTo(date2);
 	}

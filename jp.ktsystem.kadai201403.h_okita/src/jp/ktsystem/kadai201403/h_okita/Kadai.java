@@ -654,7 +654,7 @@ public class Kadai {
 				for (int i = 0; i < dataList.size(); i++) {
 					// 書き込みデータ作成
 					WorkTimeModel workTimeModel = dataList.get(i);
-					String date = workTimeModel.getDate();
+					String date = workTimeModel.getDateStr();
 					// 日付が空文字
 					if (CommonUtil.strIsEmpty(date)) {
 						throw new KadaiException(ErrorCode.EMPTY_DAY);

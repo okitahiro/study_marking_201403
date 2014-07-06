@@ -9,7 +9,7 @@ package jp.ktsystem.kadai201403.h_okita;
 public class WorkTimeModel {
 
 	// 日付
-	private String date;
+	private String dateStr;
 
 	// 出社時間
 	private String start;
@@ -29,7 +29,7 @@ public class WorkTimeModel {
 	 * @since 2014/04/01
 	 */
 	public WorkTimeModel(String date, String start, String end) {
-		this.date = date;
+		this.dateStr = date;
 		this.start = start;
 		this.end = end;
 	}
@@ -40,8 +40,8 @@ public class WorkTimeModel {
 	 * @return 日付
 	 * @since 2014/04/01
 	 */
-	public String getDate() {
-		return this.date;
+	public String getDateStr() {
+		return this.dateStr;
 	}
 
 	/**
