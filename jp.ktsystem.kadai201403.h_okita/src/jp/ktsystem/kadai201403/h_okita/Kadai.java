@@ -357,10 +357,10 @@ public class Kadai {
 				}
 			}
 		}
-		
+
 		return monthModelList;
 	}
-	
+
 	/**
 	 * 年月データ取得
 	 * @param str データ文字列

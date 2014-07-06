@@ -41,14 +41,7 @@ public class CommonUtil {
 	 * @return チェックOK:true, NG:false
 	 */
 	public static boolean checkReadFile(File file) {
-		if (file.exists()) {
-			// return true;
-			if (file.isFile() && file.canRead()) {
-				return true;
-			}
-		}
-
-		return false;
+		return (file.exists() && (file.isFile() && file.canRead()));
 	}
 
 	/**
@@ -88,17 +81,10 @@ public class CommonUtil {
 	 */
 	public static boolean checkControlCode(int c) {
 		if (0x1f >= c && 0x00 <= c) {
-			if (T_CODE == c || N_CODE == c || R_CODE == c) {
-				return false;
-			}
-			return true;
+			return (T_CODE != c && N_CODE != c && R_CODE != c);
 		}
 
-		if (0x7F == c) {
-			return true;
-		}
-
-		return false;
+		return (0x7F == c);
 	}
 
 	/**
@@ -107,9 +93,6 @@ public class CommonUtil {
 	 * @return 検索ヒット:true, なし:false
 	 */
 	public static boolean checkBlankCode(int c) {
-		if (T_CODE == c || N_CODE == c || R_CODE == c || S_CODE == c || ZS_CODE == c) {
-			return true;
-		}
-		return false;
+		return (T_CODE == c || N_CODE == c || R_CODE == c || S_CODE == c || ZS_CODE == c);
 	}
 }
