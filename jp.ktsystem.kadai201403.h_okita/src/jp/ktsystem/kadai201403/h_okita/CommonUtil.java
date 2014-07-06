@@ -25,6 +25,13 @@ public class CommonUtil {
 	public static final int ZS_CODE = (int) '　';
 
 	/**
+	 * インスタンス生成阻止のための空コンストラクタ
+	 */
+	private CommonUtil(){
+		// インスタンス生成阻止のための空コンストラクタ
+	}
+	
+	/**
 	 * 文字列のnull、空文字チェック
 	 * @param checkStr チェックする文字列
 	 * @return 文字列がnull、空文字：true、それ以外：false
