@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * 汎用メソッドクラス
@@ -81,6 +82,20 @@ public class CommonUtil {
 		return is;
 	}
 
+	/**
+	 * チェックしたい値が、チェック候補リストにあるかどうか調べる
+	 * @param checkList チェック候補の値のリスト
+	 * @param c チェックしたい値
+	 * @return 候補にチェックしたい値があればtrue、なければfalse
+	 */
+	public static boolean checkIntIsOneOfTheList(List<Integer> checkList, int c) {
+		if (null == checkList || 0 == checkList.size()) {
+			return false;
+		}
+
+		return checkList.contains(c);
+	}
+	
 	/**
 	 * 制御文字（改行、タブ、スペースを除く）ないかチェックする
 	 * @param c チェックする(int)char
