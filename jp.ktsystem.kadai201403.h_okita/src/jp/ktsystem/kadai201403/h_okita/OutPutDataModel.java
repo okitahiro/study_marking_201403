@@ -7,7 +7,7 @@ package jp.ktsystem.kadai201403.h_okita;
  */
 public class OutPutDataModel {
 		// 日付
-		private String date;
+		private String dateStr;
 
 		// 出社時間
 		private int workTime;
@@ -18,7 +18,7 @@ public class OutPutDataModel {
 		/**
 		 * コンストラクタ
 		 *
-		 * @param date
+		 * @param dateStr
 		 *            日付
 		 * @param workTime
 		 *            業務時間
@@ -26,8 +26,8 @@ public class OutPutDataModel {
 		 *            合計時間
 		 * @since 2014/04/07
 		 */
-		public OutPutDataModel(String date, int workTime, int total) {
-			this.date = date;
+		public OutPutDataModel(String dateStr, int workTime, int total) {
+			this.dateStr = dateStr;
 			this.workTime = workTime;
 			this.total = total;
 		}
@@ -38,8 +38,8 @@ public class OutPutDataModel {
 		 * @return 日付
 		 * @since 2014/04/07
 		 */
-		public String getDate() {
-			return this.date;
+		public String getDateStr() {
+			return this.dateStr;
 		}
 
 		/**
