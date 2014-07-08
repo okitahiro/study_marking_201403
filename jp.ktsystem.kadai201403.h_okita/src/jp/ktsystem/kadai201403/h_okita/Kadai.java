@@ -26,11 +26,11 @@ public class Kadai {
 
 	// 文字コード
 	private static final String CHAR_SET = "UTF-8";
-	// Lv1カラムパターン
+	// カラムパターン	["文字列"]:["文字列" or null] のマッチパターン  例) "start":"0900"
 	private static final Pattern DATA_PAT = Pattern.compile("^[\\s　]*\"(.*?)\"[\\s　]*:[\\s　]*((\"(.*?)\")|(null))[\\s　]*$", Pattern.DOTALL);
-	//Lv2年月取得用フォーマット
+	//Lv2年月取得用フォーマット	["文字列" or null] マッチパターン  例) "201403"
 	private static final Pattern MONTH_PAT_LV2 = Pattern.compile("^[\\s　]*((\"(.*?)\")|(null))[\\s　]*$", Pattern.DOTALL);
-	// Lv2日付取得用フォーマット
+	// Lv2日付取得用フォーマット	["文字列" or null]:{[文字列]} マッチパターン 例) "20140201":{"start":"0830","end":"1830"}
 	private static final Pattern FORMAT_PAT_LV2_OF_DATE = Pattern.compile("^[\\s　]*((\"(.*?)\")|(null))[\\s　]*:[\\s　]*\\{(.*)\\}[\\s　]*$",
 			Pattern.DOTALL);
 	// dateキー
@@ -199,6 +199,7 @@ public class Kadai {
 		String end = null;
 		int i = 0;
 		for (; i < strList.size(); i++) {
+			// ["文字列"]:["文字列" or null] にマッチ  例) "start":"0900"
 			Matcher m = DATA_PAT.matcher(strList.get(i));
 
 			if (!m.find())
@@ -368,6 +369,7 @@ public class Kadai {
 	 * @throws KadaiException
 	 */
 	private static String getMonthOfLv2(String str) throws KadaiException {
+		// ["文字列" or null] にマッチ  例) "201403"
 		Matcher m = MONTH_PAT_LV2.matcher(str);
 		if (m.find()) {
 			String month = m.group(3) == null ? null : m.group(3);
@@ -394,7 +396,7 @@ public class Kadai {
 		// はじめの「｛」を削除
 		for (int i = 0; i < allData.length(); i++)
 		{
-			if (CommonUtil.checkBlankCode((int) allData.charAt(i))) {
+			if (CommonUtil.checkTabSpaceNewlineCode((int) allData.charAt(i))) {
 				continue;
 			}
 
@@ -410,7 +412,7 @@ public class Kadai {
 		// 終わりの「｝」を削除
 		for (int i = allData.length() - 1; i >= 0; i--)
 		{
-			if (CommonUtil.checkBlankCode((int) allData.charAt(i))) {
+			if (CommonUtil.checkTabSpaceNewlineCode((int) allData.charAt(i))) {
 				continue;
 			}
 
@@ -427,8 +429,8 @@ public class Kadai {
 		// 勤怠データモデルリスト
 		List<WorkTimeModel> modelList = new ArrayList<WorkTimeModel>();
 
-		// '}'があったかどうかのフラグ
-		boolean flag = false;
+		// 「yyyyMMdd:{"start":"HHmm","end":"HHmm"}」部分の文字列をStringBuilderに保持し、勤怠データを取得する。
+		boolean flag = false; // '}'があったかどうかのフラグ
 		for (int i = 0; i < allData.length(); i++) {
 			char c = allData.charAt(i);
 
@@ -460,7 +462,7 @@ public class Kadai {
 		// 最後の文字列が空白だけかチェック
 		for (int i = 0; i < sb.length(); i++)
 		{
-			if (!CommonUtil.checkBlankCode(sb.charAt(i))) {
+			if (!CommonUtil.checkTabSpaceNewlineCode(sb.charAt(i))) {
 				throw new KadaiException(ErrorCode.INVALID_STRING);
 			}
 		}
@@ -477,7 +479,7 @@ public class Kadai {
 	 * @throws KadaiException
 	 */
 	private static WorkTimeModel getDataOfDayOfLv2(String dataStr) throws KadaiException {
-		// フォーマットチェック
+		// フォーマットチェック ["文字列" or null]:{[文字列]}にマッチ  例) "20140201":{"start":"0830","end":"1830"}
 		Matcher m = FORMAT_PAT_LV2_OF_DATE.matcher(dataStr);
 
 		// 勤怠情報モデル
@@ -519,6 +521,7 @@ public class Kadai {
 		String end = null;
 		int i = 0;
 		for (; i < strList.size(); i++) {
+			// ["文字列"]:["文字列" or null] にマッチ  例) "start":"0900"
 			m = DATA_PAT.matcher(strList.get(i));
 
 			if (!m.find())
@@ -562,7 +565,7 @@ public class Kadai {
 		int c = br.read();
 		while (-1 != c) {
 			// 空白コードチェック
-			if (!CommonUtil.checkBlankCode(c)) {
+			if (!CommonUtil.checkTabSpaceNewlineCode(c)) {
 				// 制御コードチェック
 				if (CommonUtil.checkControlCode(c)) {
 					throw new KadaiException(ErrorCode.INVALID_CONTROL_CHAR);

@@ -88,10 +88,7 @@ public class CommonUtil {
 	 */
 	public static boolean checkControlCode(int c) {
 		if (0x1f >= c && 0x00 <= c) {
-			if (T_CODE == c || N_CODE == c || R_CODE == c) {
-				return false;
-			}
-			return true;
+			return !(checkTabCode(c) || checkNewlineCode(c) || checkCarriageReturnCode(c));
 		}
 
 		if (0x7F == c) {
@@ -106,10 +103,52 @@ public class CommonUtil {
 	 * @param c チェックする(int)char
 	 * @return 検索ヒット:true, なし:false
 	 */
-	public static boolean checkBlankCode(int c) {
-		if (T_CODE == c || N_CODE == c || R_CODE == c || S_CODE == c || ZS_CODE == c) {
-			return true;
-		}
-		return false;
+	public static boolean checkTabSpaceNewlineCode(int c) {
+		return (checkTabCode(c) || checkNewlineCode(c) || checkCarriageReturnCode(c) || checkSpaceCode(c) || checkZSpaceCode(c));
+	}
+	
+	/**
+	 * タブかどうかチェックする
+	 * @param c チェックする(int)char
+	 * @return ヒット:true, なし:false
+	 */
+	public static boolean checkTabCode(int c){
+		return T_CODE == c;
+	}
+	
+	/**
+	 * 半角スペースかどうかチェックする
+	 * @param c チェックする(int)char
+	 * @return ヒット:true, なし:false
+	 */
+	public static boolean checkSpaceCode(int c){
+		return S_CODE == c;
+	}
+	
+	/**
+	 * 全角スペースかどうかチェックする
+	 * @param c チェックする(int)char
+	 * @return ヒット:true, なし:false
+	 */
+	public static boolean checkZSpaceCode(int c){
+		return ZS_CODE == c;
+	}
+	
+	/**
+	 * 改行かどうかチェックする
+	 * @param c チェックする(int)char
+	 * @return ヒット:true, なし:false
+	 */
+	public static boolean checkNewlineCode(int c){
+		return N_CODE == c;
+	}
+	
+	/**
+	 * キャリッジリターンかどうかチェックする
+	 * @param c チェックする(int)char
+	 * @return ヒット:true, なし:false
+	 */
+	public static boolean checkCarriageReturnCode(int c){
+		return R_CODE == c;
 	}
 }
