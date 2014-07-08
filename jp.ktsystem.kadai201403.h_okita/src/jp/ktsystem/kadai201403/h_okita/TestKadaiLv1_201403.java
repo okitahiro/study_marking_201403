@@ -434,7 +434,11 @@ public class TestKadaiLv1_201403 {
 		assertFail(INPUT_FOLDER + testFileName, OUTPUT_FOLDER + testFileName, ErrorCode.INVALID_COLUMNS_NUM);
 	}
 
-
+	@Test
+	public void test() {
+		String testFileName = "test.txt";
+		assertFail(INPUT_FOLDER + testFileName, OUTPUT_FOLDER + testFileName, ErrorCode.EMPTY);
+	}
 
 
 

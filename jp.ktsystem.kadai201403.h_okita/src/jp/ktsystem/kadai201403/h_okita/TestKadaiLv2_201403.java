@@ -459,6 +459,12 @@ public class TestKadaiLv2_201403 {
 		assertFail(INPUT_FOLDER + testFileName, OUTPUT_FOLDER + testForlderName, ErrorCode.INVALID_COLUMNS_NUM);
 	}
 
+	@Test
+	public void test() {
+		String testForlderName = "test.txt";
+		assertFail(INPUT_FOLDER + testForlderName, OUTPUT_FOLDER + testForlderName, ErrorCode.EMPTY);
+	}
+	
 	/**
 	 * 課題Lv2正常系比較メソッド
 	 * @param anInputPath 入力ファイルパス

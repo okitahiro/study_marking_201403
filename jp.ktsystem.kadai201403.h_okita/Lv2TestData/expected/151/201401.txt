@@ -1,2 +1,2 @@
 [
-INVALID_STRING
+1

@@ -670,7 +670,7 @@ public class Kadai {
 				bw.newLine();
 			} catch (KadaiException ke) {
 				// KadaiExceptionの書き込み
-				bw.write(ke.getErrorCode().toString());
+				bw.write(Integer.toString(ke.getErrorCode().ordinal()));
 			}
 		} finally {
 			bw.close();
