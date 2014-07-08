@@ -100,6 +100,12 @@ public class Kadai {
 			checkList.add((int) '[');
 
 			int c = getNextCheckChar(br);
+			
+			if(-1 == c){
+				// 入力ファイルが空ファイル
+				throw new KadaiException(ErrorCode.EMPTY);
+			}
+			
 			while (-1 != c) {
 				//チェック文字ではなかった場合
 				if (!CommonUtil.checkIntIsOneOfTheList(checkList, c)) {
@@ -296,6 +302,12 @@ public class Kadai {
 			checkList.add((int) '{');
 
 			int c = getNextCheckChar(br);
+			
+			if(-1 == c){
+				// 入力ファイルが空ファイル
+				throw new KadaiException(ErrorCode.EMPTY);
+			}
+			
 			while (-1 != c) {
 				//チェック文字ではなかった場合
 				if (!CommonUtil.checkIntIsOneOfTheList(checkList, c)) {
