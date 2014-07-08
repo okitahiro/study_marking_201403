@@ -102,7 +102,7 @@ public class Kadai {
 			int c = getNextCheckChar(br);
 			while (-1 != c) {
 				//チェック文字ではなかった場合
-				if (!checkC(checkList, c)) {
+				if (!CommonUtil.checkIntIsOneOfTheList(checkList, c)) {
 					// 読み込み文字のエラー
 					throw new KadaiException(ErrorCode.INVALID_STRING);
 				}
@@ -298,7 +298,7 @@ public class Kadai {
 			int c = getNextCheckChar(br);
 			while (-1 != c) {
 				//チェック文字ではなかった場合
-				if (!checkC(checkList, c)) {
+				if (!CommonUtil.checkIntIsOneOfTheList(checkList, c)) {
 					// 読み込み文字のエラー
 					throw new KadaiException(ErrorCode.INVALID_STRING);
 				}
@@ -576,20 +576,6 @@ public class Kadai {
 		}
 
 		return c;
-	}
-
-	/**
-	 * チェックしたい値が、チェック候補リストにあるかどうか調べる
-	 * @param checkList チェック候補の値のリスト
-	 * @param c チェックしたい値
-	 * @return 候補にチェックしたい値があればtrue、なければfalse
-	 */
-	private static boolean checkC(List<Integer> checkList, int c) {
-		if (null == checkList || 0 == checkList.size()) {
-			return false;
-		}
-
-		return checkList.contains(c);
 	}
 
 	/**
