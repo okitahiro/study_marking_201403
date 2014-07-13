@@ -29,10 +29,10 @@ public enum ErrorCode {
 	ERROE_OUTPUT_FILE,
 	// 11：ファイル内に制御文字（改行、タブ、スペースを除く）が含まれる
 	INVALID_CONTROL_CHAR,
-	// 12：日付がnullまたは空文字
-	EMPTY_DAY,
-	// 13：日付が不正
+	// 12：日付が不正
 	INVALID_DAY_STRING,
+	// 13：日付がnullまたは空文字
+	EMPTY_DAY,
 	// 14：出社・退社時間がnullまたは空文字
 	EMPTY_TIME,
 	// 15：年月がnullまたは空文字

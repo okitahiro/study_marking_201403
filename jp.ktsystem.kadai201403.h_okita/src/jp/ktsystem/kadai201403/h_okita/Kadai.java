@@ -312,9 +312,18 @@ public class Kadai {
 					checkList.add((int) '[');
 					break;
 				case '[':
-					//データ部（[～]）の文字列取得
+					// データ部（[～]）の文字列取得
 					String dataStr = getStringData(br, ']');
 					// [～]のデータ処理
+					List<WorkTimeModel> dataModel = getDataOfMonthOfLv2(dataStr);
+					
+					// 年月と日付が一致しているかチェック
+					for (WorkTimeModel model : dataModel) {
+						if(!month.equals(model.getDate().substring(0, 6))){
+							throw new KadaiException(ErrorCode.INVALID_DAY_STRING);
+						}
+					}
+					
 					WorkTimeOfMonthModel model = new WorkTimeOfMonthModel(month, getDataOfMonthOfLv2(dataStr));
 					monthModelList.add(model);
 
