@@ -716,7 +716,7 @@ public class Kadai {
 
 			// ファイル名指定
 			StringBuilder sb = new StringBuilder(outUpFolderPath);
-			sb.append("\\").append(model.getMonth()).append(".txt");
+			sb.append("/").append(model.getMonth()).append(".txt");
 
 			// ファイル書き出し
 			fileOutPut(sb.toString(), model.getModelList(), CHAR_SET);
