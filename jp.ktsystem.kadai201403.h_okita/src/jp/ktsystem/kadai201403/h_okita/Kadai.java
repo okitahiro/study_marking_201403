@@ -315,15 +315,6 @@ public class Kadai {
 					// データ部（[～]）の文字列取得
 					String dataStr = getStringData(br, ']');
 					// [～]のデータ処理
-					List<WorkTimeModel> dataModel = getDataOfMonthOfLv2(dataStr);
-					
-					// 年月と日付が一致しているかチェック
-					for (WorkTimeModel model : dataModel) {
-						if(!month.equals(model.getDate().substring(0, 6))){
-							throw new KadaiException(ErrorCode.INVALID_DAY_STRING);
-						}
-					}
-					
 					WorkTimeOfMonthModel model = new WorkTimeOfMonthModel(month, getDataOfMonthOfLv2(dataStr));
 					monthModelList.add(model);
 
@@ -367,10 +358,10 @@ public class Kadai {
 				}
 			}
 		}
-		
+
 		return monthModelList;
 	}
-	
+
 	/**
 	 * 年月データ取得
 	 * @param str データ文字列
@@ -728,7 +719,83 @@ public class Kadai {
 			sb.append("\\").append(model.getMonth()).append(".txt");
 
 			// ファイル書き出し
-			fileOutPut(sb.toString(), model.getModelList(), CHAR_SET);
+			outPutMonthFileOfLv2(sb.toString(), model.getModelList(), model.getMonth(), CHAR_SET);
+		}
+	}
+
+	/**
+	 * 勤怠時間をファイルに出力する
+	 *
+	 * @param anOutputPath
+	 *            出力ファイルパス
+	 * @param dataList
+	 *            出力データリスト
+	 * @param month
+	 *            出力する月
+	 * @param charSet
+	 *            文字コード
+	 * @throws 入出力の例外
+	 * @since 2014/04/01
+	 */
+	private static void outPutMonthFileOfLv2(String anOutputPath,
+			List<WorkTimeModel> dataList, String month, String charSet) throws IOException,
+			KadaiException {
+		// データが0件の場合、処理をやめる
+		if (0 == dataList.size()) {
+			return;
+		}
+
+		BufferedWriter bw = null;
+		try {
+			File file = new File(anOutputPath);
+			bw = new BufferedWriter(new OutputStreamWriter(
+					new FileOutputStream(file), charSet));
+
+			bw.write("[");
+			bw.newLine();
+
+			// 合計時間
+			int total = 0;
+			try {
+				for (int i = 0; i < dataList.size(); i++) {
+					// 書き込みデータ作成
+					WorkTimeModel workTimeModel = dataList.get(i);
+					String date = workTimeModel.getDate();
+					// 日付が空文字
+					if (CommonUtil.strIsEmpty(date)) {
+						throw new KadaiException(ErrorCode.EMPTY_DAY);
+					}
+					// 日付が不正
+					if (!checkDate(date, "yyyyMMdd")) {
+						throw new KadaiException(ErrorCode.INVALID_DAY_STRING);
+					}
+					// 年月と日付のチェック
+					if (!date.substring(0, 6).equals(month)) {
+						throw new KadaiException(ErrorCode.INVALID_DAY_STRING);
+					}
+
+					int workTime = Integer.parseInt(calcWorkTime(workTimeModel.getStart(), workTimeModel.getEnd()));
+					total += workTime;
+
+					// データ書き込み
+					String line = String.format(
+							"{\"date\":\"%s\",\"workTime\":%s,\"total\":%s}", date, workTime, total);
+
+					bw.write(line);
+					if (i != dataList.size() - 1) {
+						bw.write(',');
+					}
+					bw.newLine();
+				}
+
+				bw.write("]");
+				bw.newLine();
+			} catch (KadaiException ke) {
+				// KadaiExceptionの書き込み
+				bw.write(ke.getErrorCode().toString());
+			}
+		} finally {
+			bw.close();
 		}
 	}
 
