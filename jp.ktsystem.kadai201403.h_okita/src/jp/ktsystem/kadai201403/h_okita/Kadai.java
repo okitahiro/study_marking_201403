@@ -469,6 +469,15 @@ public class Kadai {
 
 		// 日付によるソート
 		Collections.sort(modelList, new WorkTimeModelComparator());
+		// 日付の重複チェック
+		for(int i = 1; modelList.size() > i;i++)
+		{
+			if(modelList.get(i-1).getDate().equals(modelList.get(i).getDate()))
+			{
+				throw new KadaiException(ErrorCode.INVALID_DAY_STRING);
+			}
+		}
+		
 		return modelList;
 	}
 
